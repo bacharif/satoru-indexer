@@ -3,32 +3,6 @@
 
 This is a specific indexer for the Saturo project to index all events from the Perps DEX. The indexer connects to the StarkNet blockchain, fetches relevant events, and stores them in a PostgreSQL database.
 
-## Project Structure
-
-```
-my_project/
-├── src/
-│   ├── main.rs
-│   ├── config.rs
-│   ├── database.rs
-│   ├── provider.rs
-│   ├── events/
-│   │   ├── mod.rs
-│   │   ├── types.rs
-│   │   └── handler.rs
-├── .env
-├── Cargo.toml
-```
-
-## Dependencies
-
-- starknet
-- dotenv
-- url
-- tokio
-- tokio-postgres
-- hex
-
 ## Getting Started
 
 ### Prerequisites
@@ -39,6 +13,59 @@ my_project/
 
 ```
 DATABASE_URL=your_database_url
+```
+
+## Setting Up PostgreSQL
+
+### Install PostgreSQL:
+
+- **Ubuntu**:
+    ```sh
+    sudo apt update
+    sudo apt install postgresql postgresql-contrib
+    ```
+- **MacOS**:
+    ```sh
+    brew install postgresql
+    ```
+- **Windows**: Download and install PostgreSQL from [here](https://www.postgresql.org/download/windows/).
+
+### Start PostgreSQL service:
+
+- **Ubuntu**:
+    ```sh
+    sudo service postgresql start
+    ```
+- **MacOS**:
+    ```sh
+    brew services start postgresql
+    ```
+- **Windows**: Follow the instructions provided by the installer to start the PostgreSQL service.
+
+### Create a new PostgreSQL user and database:
+
+1. Open a terminal and run:
+    ```sh
+    sudo -u postgres psql
+    ```
+2. In the PostgreSQL shell, run:
+    ```sql
+    CREATE USER saturo_user WITH PASSWORD 'your_password';
+    CREATE DATABASE saturo_db;
+    GRANT ALL PRIVILEGES ON DATABASE saturo_db TO saturo_user;
+    \q
+    ```
+
+### Set up the `.env` file with your database URL:
+
+```bash
+DATABASE_URL=postgres://saturo_user:your_password@localhost/saturo_db
+```
+
+### Execute the SQL scripts in the `sql` folder to create the necessary tables:
+
+```sh
+psql -U saturo_user -d saturo_db -f sql/db_setup.sql
 ```
 
 ### Installation
